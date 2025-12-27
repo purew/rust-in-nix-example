@@ -29,6 +29,7 @@
         src = pkgs.lib.cleanSourceWith {
           src = ./.;
           filter = path: type:
+            (pkgs.lib.hasInfix "proto-fixed" path) ||
             (pkgs.lib.hasSuffix ".proto" path) ||
             (craneLib.filterCargoSources path type);
         };

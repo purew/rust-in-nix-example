@@ -1,0 +1,3 @@
+[submodule "proto-fixed"]
+	path = proto-fixed
+	url = https://github.com/purew/rust-in-nix-example.git
