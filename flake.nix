@@ -32,6 +32,7 @@
           filter = path: type:
             (pkgs.lib.hasInfix "proto-fixed" path) ||
             (pkgs.lib.hasSuffix ".proto" path) ||
+            (pkgs.lib.hasSuffix "deny.toml" path) ||
             (craneLib.filterCargoSources path type);
         };
 
@@ -69,10 +70,15 @@
         rust-in-nix-example-tests = craneLib.cargoTest (commonArgs // {
           inherit cargoArtifacts;
         });
+
+        # Run cargo-deny
+        rust-in-nix-example-deny = craneLib.cargoDeny {
+          inherit src;
+        };
       in
       {
         checks = {
-          inherit rust-in-nix-example rust-in-nix-example-clippy rust-in-nix-example-fmt rust-in-nix-example-tests;
+          inherit rust-in-nix-example rust-in-nix-example-clippy rust-in-nix-example-fmt rust-in-nix-example-tests rust-in-nix-example-deny;
         };
 
         packages = {
@@ -91,6 +97,7 @@
 
           packages = [
             pkgs.protobuf
+            pkgs.cargo-deny
           ];
         };
       });
