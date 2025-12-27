@@ -53,10 +53,26 @@
         rust-in-nix-example = craneLib.buildPackage (commonArgs // {
           inherit cargoArtifacts;
         });
+
+        # Run clippy
+        rust-in-nix-example-clippy = craneLib.cargoClippy (commonArgs // {
+          inherit cargoArtifacts;
+          cargoClippyExtraArgs = "--all-targets -- --deny warnings";
+        });
+
+        # Check formatting
+        rust-in-nix-example-fmt = craneLib.cargoFmt {
+          inherit src;
+        };
+
+        # Run tests
+        rust-in-nix-example-tests = craneLib.cargoTest (commonArgs // {
+          inherit cargoArtifacts;
+        });
       in
       {
         checks = {
-          inherit rust-in-nix-example;
+          inherit rust-in-nix-example rust-in-nix-example-clippy rust-in-nix-example-fmt rust-in-nix-example-tests;
         };
 
         packages = {
