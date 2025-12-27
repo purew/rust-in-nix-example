@@ -13,7 +13,7 @@
   };
 
   outputs = { self, nixpkgs, crane, fenix, flake-utils, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
+    flake-utils.lib.eachSystem [ "aarch64-darwin" "aarch64-linux" "x86_64-linux" ] (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
 
@@ -82,6 +82,8 @@
 
         apps.default = flake-utils.lib.mkApp {
           drv = rust-in-nix-example;
+        } // {
+          meta.description = "Rust hello-world with prost protobuf parsing";
         };
 
         devShells.default = craneLib.devShell {
