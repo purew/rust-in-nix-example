@@ -31,7 +31,6 @@
           src = ./.;
           filter = path: type:
             (pkgs.lib.hasInfix "proto-fixed" path) ||
-            (pkgs.lib.hasSuffix ".proto" path) ||
             (pkgs.lib.hasSuffix "deny.toml" path) ||
             (craneLib.filterCargoSources path type);
         };
